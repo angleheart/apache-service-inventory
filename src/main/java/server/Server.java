@@ -16,6 +16,7 @@ public class Server {
         port(port);
 
         get("/customers/:query", (req, res) -> {
+            System.out.println("[Customer Server] GET " + req.params(":query"));
             try(Database database = new Database()){
                 CustomerDatabase customerDatabase = new CustomerDatabase(database.getConnection());
                 return toJson(
@@ -28,6 +29,7 @@ public class Server {
         });
 
         post("/customers", (req, res) -> {
+            System.out.println("[Customer Server] POST");
             try(Database database = new Database()){
                 CustomerDatabase customerDatabase = new CustomerDatabase(database.getConnection());
                 customerDatabase.add(fromJson(Customer.class, req.body()));
@@ -37,7 +39,8 @@ public class Server {
                 return null;
             }
         });
-
+        
+        System.out.println("[Customer Server] Listening on port " + port);
     }
 
 }

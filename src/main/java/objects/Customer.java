@@ -76,4 +76,9 @@ public class Customer {
         return taxable;
     }
 
+    @Override
+    public String toString(){
+        return number + "-" + name;
+    }
+
 }
