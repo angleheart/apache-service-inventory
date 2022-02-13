@@ -48,6 +48,7 @@ public class Server {
                 VEHICLE, "/vehicles", req.body()
         ));
 
+        System.out.println("[Gateway] listening on port " + port);
     }
 
 }
