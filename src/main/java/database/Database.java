@@ -4,7 +4,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public abstract class Database implements AutoCloseable {
+public class Database implements AutoCloseable {
 
     private static DataSource dataSource;
     private final Connection conn;
