@@ -20,6 +20,7 @@ public class GatewayClient implements AutoCloseable {
     private CloseableHttpResponse response;
 
     static String tryPostIssue(Service service, String route, String payload){
+        System.out.println("[Gateway] POST " + service + ":" + route);
         try(GatewayClient client = new GatewayClient(service, route)){
             return client.issuePost(payload);
         }catch (Exception e) {
@@ -29,6 +30,7 @@ public class GatewayClient implements AutoCloseable {
     }
 
     static String tryGetIssue(Service service, String route){
+        System.out.println("[Gateway] GET " + service + ":" + route);
         try(GatewayClient client = new GatewayClient(service, route)){
             return client.issueGet();
         }catch (Exception e) {
