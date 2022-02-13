@@ -16,17 +16,24 @@ public class Config {
     private final String databaseUsername;
     private final String databasePassword;
 
+    private final String customerServiceIP;
+    private final String customerServicePort;
+
     private Config(
             int serverPort,
             String databaseUrl,
             String databaseName,
             String databaseUsername,
-            String databasePassword) {
+            String databasePassword,
+            String customerServiceIP,
+            String customerServicePort) {
         this.serverPort = serverPort;
         this.databaseUrl = databaseUrl;
         this.databaseName = databaseName;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
+        this.customerServiceIP = customerServiceIP;
+        this.customerServicePort = customerServicePort;
     }
 
     private static Config instance;
@@ -43,7 +50,9 @@ public class Config {
                 properties.getProperty("databaseUrl"),
                 properties.getProperty("databaseName"),
                 properties.getProperty("databaseUsername"),
-                properties.getProperty("databasePassword")
+                properties.getProperty("databasePassword"),
+                properties.getProperty("customerServiceIP"),
+                properties.getProperty("customerServicePort")
         );
         return instance;
     }
@@ -61,6 +70,14 @@ public class Config {
 
     public int getServerPort() {
         return serverPort;
+    }
+
+    public String getCustomerServiceIP() {
+        return customerServiceIP;
+    }
+
+    public String getCustomerServicePort() {
+        return customerServicePort;
     }
 
 }
