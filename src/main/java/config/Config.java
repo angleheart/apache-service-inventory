@@ -1,9 +1,5 @@
 package config;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -11,23 +7,18 @@ import java.util.Properties;
 public class Config {
 
     private final int serverPort;
-    private final String databaseUrl;
-    private final String databaseName;
-    private final String databaseUsername;
-    private final String databasePassword;
 
-    private Config(
-            int serverPort,
-            String databaseUrl,
-            String databaseName,
-            String databaseUsername,
-            String databasePassword) {
-        this.serverPort = serverPort;
-        this.databaseUrl = databaseUrl;
-        this.databaseName = databaseName;
-        this.databaseUsername = databaseUsername;
-        this.databasePassword = databasePassword;
-    }
+    private final String accountingServerIP;
+    private final String accountingServerPort;
+    private final String vehicleServerIP;
+    private final String vehicleServerPort;
+    private final String inventoryServerIP;
+    private final String inventoryServerPort;
+    private final String customerServerIP;
+    private final String customerServerPort;
+
+    private final String sequenceServerIP;
+    private final String sequenceServerPort;
 
     private static Config instance;
 
@@ -40,27 +31,63 @@ public class Config {
         properties.load(new FileInputStream(path));
         instance = new Config(
                 Integer.parseInt(properties.getProperty("serverPort")),
-                properties.getProperty("databaseUrl"),
-                properties.getProperty("databaseName"),
-                properties.getProperty("databaseUsername"),
-                properties.getProperty("databasePassword")
+                properties.getProperty("accountingServerIP"),
+                properties.getProperty("accountingServerPort"),
+                properties.getProperty("vehicleServerIP"),
+                properties.getProperty("vehicleServerPort"),
+                properties.getProperty("inventoryServerIP"),
+                properties.getProperty("inventoryServerPort"),
+                properties.getProperty("customerServerIP"),
+                properties.getProperty("customerServerPort"),
+                properties.getProperty("sequenceServerIP"),
+                properties.getProperty("sequenceServerPort")
         );
         return instance;
     }
 
-    public DataSource getDataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(databaseUrl + "/" + databaseName);
-        config.setUsername(databaseUsername);
-        config.setPassword(databasePassword);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        return new HikariDataSource(config);
+    public Config(
+            int serverPort,
+            String accountingServerIP,
+            String accountingServerPort,
+            String vehicleServerIP,
+            String vehicleServerPort,
+            String inventoryServerIP,
+            String inventoryServerPort,
+            String customerServerIP,
+            String customerServerPort,
+            String sequenceServerIP,
+            String sequenceServerPort) {
+        this.serverPort = serverPort;
+        this.accountingServerIP = accountingServerIP;
+        this.accountingServerPort = accountingServerPort;
+        this.vehicleServerIP = vehicleServerIP;
+        this.vehicleServerPort = vehicleServerPort;
+        this.inventoryServerIP = inventoryServerIP;
+        this.inventoryServerPort = inventoryServerPort;
+        this.customerServerIP = customerServerIP;
+        this.customerServerPort = customerServerPort;
+        this.sequenceServerIP = sequenceServerIP;
+        this.sequenceServerPort = sequenceServerPort;
     }
 
     public int getServerPort() {
         return serverPort;
     }
+
+    public String getAccountingServerIP() {
+        return accountingServerIP;
+    }
+
+    public String getServerAddress(Service service) {
+        String prefix = "http://";
+        return switch (service) {
+            case ACCOUNTING -> prefix + accountingServerIP + ":" + accountingServerPort;
+            case VEHICLE -> prefix + vehicleServerIP + ":" + vehicleServerPort;
+            case INVENTORY -> prefix + inventoryServerIP + ":" + inventoryServerPort;
+            case CUSTOMER -> prefix + customerServerIP + ":" + customerServerPort;
+            case SEQUENCE -> prefix + sequenceServerIP + ":" + sequenceServerPort;
+        };
+    }
+
 
 }
