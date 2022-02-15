@@ -15,6 +15,7 @@ public class Server {
         port(port);
 
         get("/parts/:mfg/:number", (req, res) -> {
+            System.out.println("[Inventory Server] GET /parts/" + req.params(":mfg") + "/" + req.params(":number"));
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
                 return toJson(
@@ -27,6 +28,7 @@ public class Server {
         });
 
         post("/parts/update", (req, res) -> {
+            System.out.println("[Vehicle Server] POST /parts/update");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
                 return toJson(
@@ -39,6 +41,7 @@ public class Server {
         });
 
         post("/parts/invoice/push", (req, res) -> {
+            System.out.println("[Vehicle Server] POST /parts/invoice/push");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
                 inventoryDatabase.updateForInvoice(fromJson(Invoice.class, req.body()));
@@ -50,6 +53,7 @@ public class Server {
         });
 
         post("/parts/invoice/pull", (req, res) -> {
+            System.out.println("[Vehicle Server] POST /parts/invoice/pull");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
                 inventoryDatabase.updateForInvoice(fromJson(Invoice.class, req.body()), true);
