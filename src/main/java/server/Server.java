@@ -5,8 +5,6 @@ import database.InventoryDatabase;
 import objects.Invoice;
 import objects.Part;
 
-import java.sql.SQLException;
-
 import static server.Transformer.fromJson;
 import static server.Transformer.toJson;
 import static spark.Spark.*;
@@ -62,6 +60,7 @@ public class Server {
             return null;
         });
 
+        System.out.println("[Inventory Server] Listening on port " + port);
     }
 
 }
