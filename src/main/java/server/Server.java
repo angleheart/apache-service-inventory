@@ -16,6 +16,7 @@ public class Server {
         port(port);
 
         get("/vehicles/years", (req, res) -> {
+            System.out.println("[Vehicle Server] GET /vehicles/years");
             try (Database database = new Database()) {
                 VehicleDatabase vehicleDatabase = new VehicleDatabase(database.getConnection());
                 return toJson(
@@ -28,6 +29,7 @@ public class Server {
         });
 
         get("/vehicles/makes/:year", (req, res) -> {
+            System.out.println("[Vehicle Server] GET /vehicles/makes/" + req.params(":year"));
             try (Database database = new Database()) {
                 VehicleDatabase vehicleDatabase = new VehicleDatabase(database.getConnection());
                 return toJson(
@@ -40,6 +42,8 @@ public class Server {
         });
 
         get("/vehicles/models/:year/:make", (req, res) -> {
+            System.out.println("[Vehicle Server] GET /vehicles/models/" +
+                    req.params(":year") + "/" + req.params(":make"));
             try (Database database = new Database()) {
                 VehicleDatabase vehicleDatabase = new VehicleDatabase(database.getConnection());
                 return toJson(
@@ -52,6 +56,8 @@ public class Server {
         });
 
         get("/vehicles/engines/:year/:make/:model", (req, res) -> {
+            System.out.println("[Vehicle Server] GET /vehicles/engines/" +
+                    req.params(":year") + "/" + req.params(":make") + "/" + req.params(":model"));
             try (Database database = new Database()) {
                 VehicleDatabase vehicleDatabase = new VehicleDatabase(database.getConnection());
                 return toJson(
@@ -74,6 +80,7 @@ public class Server {
             }
         });
 
+        System.out.println("[Vehicle Server] Listening on port " + port);
     }
 
 }
