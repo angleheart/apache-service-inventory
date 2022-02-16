@@ -48,16 +48,16 @@ public class Server {
                 VEHICLE, "/vehicles", req.body()
         ));
 
-        post("/sequence", (req, res) -> tryPostIssue(
-                SEQUENCE, "/sequence", req.body()
+        post("/sequences", (req, res) -> tryPostIssue(
+                SEQUENCE, "/sequences", req.body()
         ));
 
-        get("/sequence", (req, res) -> tryGetIssue(
-                SEQUENCE, "/sequence"
+        get("/sequences", (req, res) -> tryGetIssue(
+                SEQUENCE, "/sequences"
         ));
 
-        post("/sequence/kill", (req, res) -> tryPostIssue(
-                SEQUENCE, "/sequence/" + req.params(":name"), req.body()
+        post("/sequences/kill", (req, res) -> tryPostIssue(
+                SEQUENCE, "/sequences/" + req.params(":name"), req.body()
         ));
 
         System.out.println("[Gateway] listening on port " + port);
