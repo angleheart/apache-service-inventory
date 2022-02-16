@@ -17,7 +17,6 @@ public class Server {
             System.out.println("[Sequence Server] GET /sequences");
             try(Database database = new Database()){
                 SequenceDatabase sequenceDatabase = new SequenceDatabase(database.getConnection());
-                System.out.println(toJson(sequenceDatabase.getAll()));
                 return toJson(sequenceDatabase.getAll());
             }catch(Exception e){
                 e.printStackTrace();
