@@ -67,11 +67,21 @@ public record SequenceDatabase(Connection conn) {
     public void hold(Sequence sequence) throws SQLException {
         try{
             killWithoutCommit(sequence.getSequenceName());
+
             List<PreparedStatement> prepStatements = new ArrayList<>();
-            prepStatements.add(conn.prepareStatement(
+
+            PreparedStatement prepMain = conn.prepareStatement(
                     "INSERT INTO Sequences(SaveName, CustomerNumber, CounterPersonNumber, PurchaseOrder, " +
                             "VehicleDescription, ShipTo, FreightTotal) VALUES (?, ?, ?, ?, ?, ?, ?);"
-            ));
+            );
+            prepMain.setString(1, sequence.getSequenceName());
+            prepMain.setString(2, sequence.getCustomerNumber());
+            prepMain.setInt(3, sequence.getCounterPersonNumber());
+            prepMain.setString(4, sequence.getPo());
+            prepMain.setString(5, sequence.getVehicleDescription());
+            prepMain.setString(6, sequence.getShipTo());
+            prepMain.setDouble(7, sequence.getFreightTotal());
+            prepStatements.add(prepMain);
 
             for(SequenceLine line : sequence.getLines()){
                 PreparedStatement prep = conn.prepareStatement(
