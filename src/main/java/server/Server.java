@@ -48,6 +48,18 @@ public class Server {
                 VEHICLE, "/vehicles", req.body()
         ));
 
+        post("/sequence", (req, res) -> tryPostIssue(
+                SEQUENCE, "/sequence", req.body()
+        ));
+
+        get("/sequence", (req, res) -> tryGetIssue(
+                SEQUENCE, "/sequence"
+        ));
+
+        post("/sequence/kill", (req, res) -> tryPostIssue(
+                SEQUENCE, "/sequence/" + req.params(":name"), req.body()
+        ));
+
         System.out.println("[Gateway] listening on port " + port);
     }
 
