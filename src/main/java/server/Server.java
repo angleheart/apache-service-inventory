@@ -57,7 +57,7 @@ public class Server {
         ));
 
         post("/sequences/kill", (req, res) -> tryPostIssue(
-                SEQUENCE, "/sequences/" + req.params(":name"), req.body()
+                SEQUENCE, "/sequences/kill", req.body()
         ));
 
         System.out.println("[Gateway] listening on port " + port);
