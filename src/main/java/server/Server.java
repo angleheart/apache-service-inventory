@@ -17,8 +17,12 @@ public class Server {
             System.out.println("[Sequence Server] GET /sequences");
             try(Database database = new Database()){
                 SequenceDatabase sequenceDatabase = new SequenceDatabase(database.getConnection());
+                System.out.println(toJson(sequenceDatabase.getAll()));
                 return toJson(sequenceDatabase.getAll());
+            }catch(Exception e){
+                e.printStackTrace();
             }
+            return null;
         });
 
         post("/sequences", (req, res) -> {
@@ -27,7 +31,10 @@ public class Server {
                 SequenceDatabase sequenceDatabase = new SequenceDatabase(database.getConnection());
                 sequenceDatabase.hold(fromJson(Sequence.class, req.body()));
                 return true;
+            }catch(Exception e){
+                e.printStackTrace();
             }
+            return null;
         });
         
         post("/sequences/kill", (req, res) -> {
@@ -35,8 +42,8 @@ public class Server {
             try(Database database = new Database()){
                 SequenceDatabase sequenceDatabase = new SequenceDatabase(database.getConnection());
                 sequenceDatabase.kill(fromJson(Sequence.class, req.body()).getSequenceName());
-                return true;
             }
+            return null;
         });
 
         System.out.println("[Sequence Server] Listening on port " + port);

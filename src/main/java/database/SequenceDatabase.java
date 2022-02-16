@@ -52,6 +52,7 @@ public record SequenceDatabase(Connection conn) {
                     lineResultSet.getString("TaxCode")
             ));
 
+        resultSet.next();
         return new Sequence(
                 resultSet.getString("SaveName"),
                 resultSet.getString("CustomerNumber"),
