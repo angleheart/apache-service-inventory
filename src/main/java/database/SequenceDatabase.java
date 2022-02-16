@@ -56,9 +56,9 @@ public record SequenceDatabase(Connection conn) {
         return new Sequence(
                 resultSet.getString("SaveName"),
                 resultSet.getString("CustomerNumber"),
-                resultSet.getString("PurchaseOrder"),
                 resultSet.getString("VehicleDescription"),
                 resultSet.getString("ShipTo"),
+                resultSet.getString("PurchaseOrder"),
                 resultSet.getInt("CounterPersonNumber"),
                 resultSet.getDouble("FreightTotal"),
                 lines
