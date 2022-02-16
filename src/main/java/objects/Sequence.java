@@ -12,7 +12,6 @@ public class Sequence {
     private final int counterPersonNumber;
     private final double freightTotal;
     private final List<SequenceLine> lines;
-
     public Sequence(
             String sequenceName,
             String customerNumber,
