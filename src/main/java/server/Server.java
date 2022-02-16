@@ -30,11 +30,11 @@ public class Server {
             }
         });
         
-        post("/sequences/kill/:name", (req, res) -> {
+        post("/sequences/kill", (req, res) -> {
             System.out.println("[Sequence Server] POST /sequences/kill/" + req.params(":name"));
             try(Database database = new Database()){
                 SequenceDatabase sequenceDatabase = new SequenceDatabase(database.getConnection());
-                sequenceDatabase.kill(req.params(":name"));
+                sequenceDatabase.kill(fromJson(Sequence.class, req.body()).getSequenceName());
                 return true;
             }
         });
