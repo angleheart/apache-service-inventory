@@ -1,10 +1,11 @@
+DROP DATABASE Accounting;
 CREATE DATABASE Accounting;
 USE Accounting;
 
 
 CREATE TABLE Invoices
 (
-    InvoiceNumber       int UNSIGNED PRIMARY KEY,
+    InvoiceNumber       int UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     CustomerNumber      varchar(10)       NOT NULL,
     CounterPersonNumber tinyint UNSIGNED  NOT NULL,
     PurchaseOrder       varchar(15),
@@ -15,8 +16,6 @@ CREATE TABLE Invoices
     ReleaseCode         tinyint           NOT NULL,
     Balance             decimal(10, 2)    NOT NULL,
 
-    TaxableNet          decimal(10, 2)    NOT NULL,
-    NonTaxableNet       decimal(10, 2)    NOT NULL,
     FreightTotal        decimal(10, 2)    NOT NULL,
     TaxRate             decimal(3, 3)     NOT NULL,
 
@@ -27,15 +26,12 @@ CREATE TABLE InvoiceLines
 (
     IndexKey      int UNSIGNED   NOT NULL,
     InvoiceNumber int UNSIGNED   NOT NULL,
-    ReleaseTime   TIMESTAMP      NOT NULL,
-    TransCode     varchar(5)     NOT NULL,
     Quantity      int            NOT NULL,
     LineCode      char(3)        NOT NULL,
     PartNumber    varchar(50)    NOT NULL,
     Description   varchar(50)    NOT NULL,
     ListPrice     decimal(10, 3) NOT NULL,
     Price         decimal(10, 3) NOT NULL,
-    CorePrice     decimal(10, 3) NOT NULL,
     TaxCode       char(1)        NOT NULL,
 
     FOREIGN KEY (InvoiceNumber) references Invoices (InvoiceNumber),
@@ -61,60 +57,4 @@ CREATE TABLE PerInvoicePayments
     AmountApplied decimal(10, 2) NOT NULL,
     FOREIGN KEY (PaymentID) REFERENCES Payments (PaymentID),
     FOREIGN KEY (InvoiceNumber) REFERENCES Invoices (InvoiceNumber)
-);
-
-CREATE Table EndOfDayReports
-(
-    Month             smallint,
-    Day               smallint,
-    Year              smallint,
-    GenerationTime    TIMESTAMP,
-
-    NetCashInvoices   decimal(10, 2),
-    NetChargeInvoices decimal(10, 2),
-    NetFreight        decimal(10, 2),
-    NetSalesTax       decimal(10, 2),
-    NetInterStore     decimal(10, 2),
-
-
-    NetTaxable        decimal(10, 2),
-    NetNonTaxable     decimal(10, 2),
-    TaxTotal          decimal(10, 2),
-
-    CONSTRAINT Pk_EOD PRIMARY KEY (Month, Day, Year)
-);
-
-CREATE TABLE Statements
-(
-    Month          smallint,
-    Year           smallint,
-    CustomerNumber varchar(10),
-
-    GenerationTime TIMESTAMP,
-
-    Current        decimal(10, 2) NOT NULL,
-    30_Days        decimal(10, 2) NOT NULL,
-    60_Days        decimal(10, 2) NOT NULL,
-    90_Days        decimal(10, 2) NOT NULL,
-    TotalPaid      decimal(10, 2) NOT NULL,
-
-    CONSTRAINT Pk_Statements PRIMARY KEY (Month, Year, CustomerNumber)
-);
-
-CREATE TABLE StatementLines
-(
-    Month          smallint,
-    Year           smallint,
-    CustomerNumber varchar(10),
-    IndexKey       smallint,
-
-    FromDate       varchar(15) NOT NULL,
-    InvoiceNumber  varchar(15) NOT NULL,
-    Detail         varchar(15) NOT NULL,
-    OriginalAmount varchar(15) NOT NULL,
-    AppliedAmount  varchar(15) NOT NULL,
-    BalanceAmount  varchar(15) NOT NULL,
-    DueAmount      varchar(15) NOT NULL,
-
-    FOREIGN KEY (Month, Year, CustomerNumber) REFERENCES Statements (Month, Year, CustomerNumber)
 );
