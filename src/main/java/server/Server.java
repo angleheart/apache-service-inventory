@@ -2,7 +2,7 @@ package server;
 
 import database.Database;
 import database.InventoryDatabase;
-import objects.Invoice;
+import objects.InvoiceLine;
 import objects.Part;
 
 import static server.Transformer.fromJson;
@@ -42,7 +42,7 @@ public class Server {
             System.out.println("[Inventory Server] POST /parts/invoice/push");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
-                inventoryDatabase.updateForInvoice(fromJson(Invoice.class, req.body()));
+                inventoryDatabase.updateForInvoice(fromJson(InvoiceLine[].class, req.body()));
                 return true;
             }catch(Exception e){
                 e.printStackTrace();
@@ -54,7 +54,7 @@ public class Server {
             System.out.println("[Inventory Server] POST /parts/invoice/pull");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
-                inventoryDatabase.updateForInvoice(fromJson(Invoice.class, req.body()), true);
+                inventoryDatabase.updateForInvoice(fromJson(InvoiceLine[].class, req.body()), true);
                 return true;
             }catch(Exception e){
                 e.printStackTrace();

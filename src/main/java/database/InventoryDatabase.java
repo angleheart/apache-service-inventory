@@ -1,6 +1,5 @@
 package database;
 
-import objects.Invoice;
 import objects.InvoiceLine;
 import objects.Part;
 
@@ -52,11 +51,11 @@ public record InventoryDatabase(Connection conn) {
         return toReturn;
     }
 
-    public void updateForInvoice(Invoice invoice) throws SQLException {
-        updateForInvoice(invoice, false);
+    public void updateForInvoice(InvoiceLine[] lines) throws SQLException {
+        updateForInvoice(lines, false);
     }
 
-    public void updateForInvoice(Invoice invoice, boolean rollback) throws SQLException {
+    public void updateForInvoice(InvoiceLine[] lines, boolean rollback) throws SQLException {
 
         PreparedStatement prepStatement = conn.prepareStatement(
                 "UPDATE Parts " +
@@ -65,7 +64,7 @@ public record InventoryDatabase(Connection conn) {
 
         );
 
-        for (InvoiceLine line : invoice.getInvoiceLines()) {
+        for (InvoiceLine line : lines) {
             int quantity = line.getQty();
             if (rollback)
                 quantity *= -1;
