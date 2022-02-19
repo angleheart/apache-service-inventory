@@ -37,7 +37,6 @@ public class SequenceClient implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        response.close();
         client.close();
     }
 }
