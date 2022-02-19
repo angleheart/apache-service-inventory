@@ -60,6 +60,10 @@ public class Server {
                 SEQUENCE, "/sequences/kill", req.body()
         ));
 
+        post("/sequences/release/:code", (req, res) -> tryPostIssue(
+                SEQUENCE, "/sequences/release/" + req.params(":code"), req.body()
+        ));
+
         System.out.println("[Gateway] listening on port " + port);
     }
 
