@@ -28,7 +28,7 @@ public class Server {
         });
 
         post("/parts/update", (req, res) -> {
-            System.out.println("[Vehicle Server] POST /parts/update");
+            System.out.println("[Inventory Server] POST /parts/update");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
                 return toJson(inventoryDatabase.updatePart(fromJson(Part.class, req.body())));
@@ -39,7 +39,7 @@ public class Server {
         });
 
         post("/parts/invoice/push", (req, res) -> {
-            System.out.println("[Vehicle Server] POST /parts/invoice/push");
+            System.out.println("[Inventory Server] POST /parts/invoice/push");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
                 inventoryDatabase.updateForInvoice(fromJson(Invoice.class, req.body()));
@@ -51,7 +51,7 @@ public class Server {
         });
 
         post("/parts/invoice/pull", (req, res) -> {
-            System.out.println("[Vehicle Server] POST /parts/invoice/pull");
+            System.out.println("[Inventory Server] POST /parts/invoice/pull");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
                 inventoryDatabase.updateForInvoice(fromJson(Invoice.class, req.body()), true);
