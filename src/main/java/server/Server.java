@@ -31,9 +31,7 @@ public class Server {
             System.out.println("[Vehicle Server] POST /parts/update");
             try(Database database = new Database()){
                 InventoryDatabase inventoryDatabase = new InventoryDatabase(database.getConnection());
-                return toJson(
-                        inventoryDatabase.updatePart(fromJson(Part.class, req.body()))
-                );
+                return toJson(inventoryDatabase.updatePart(fromJson(Part.class, req.body())));
             }catch(Exception e){
                 e.printStackTrace();
             }
