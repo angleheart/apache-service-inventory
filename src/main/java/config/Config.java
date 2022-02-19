@@ -1,5 +1,6 @@
 package config;
 
+import server.Service;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -16,17 +17,31 @@ public class Config {
     private final String databaseUsername;
     private final String databasePassword;
 
+    private final String accountingServerIP;
+    private final String accountingServerPort;
+
+    private final String inventoryServerIP;
+    private final String inventoryServerPort;
+
     private Config(
             int serverPort,
             String databaseUrl,
             String databaseName,
             String databaseUsername,
-            String databasePassword) {
+            String databasePassword,
+            String accountingServerIP,
+            String accountingServerPort,
+            String inventoryServerIP,
+            String inventoryServerPort) {
         this.serverPort = serverPort;
         this.databaseUrl = databaseUrl;
         this.databaseName = databaseName;
         this.databaseUsername = databaseUsername;
         this.databasePassword = databasePassword;
+        this.accountingServerIP = accountingServerIP;
+        this.accountingServerPort = accountingServerPort;
+        this.inventoryServerIP = inventoryServerIP;
+        this.inventoryServerPort = inventoryServerPort;
     }
 
     private static Config instance;
@@ -43,7 +58,11 @@ public class Config {
                 properties.getProperty("databaseUrl"),
                 properties.getProperty("databaseName"),
                 properties.getProperty("databaseUsername"),
-                properties.getProperty("databasePassword")
+                properties.getProperty("databasePassword"),
+                properties.getProperty("accountingServerIP"),
+                properties.getProperty("accountingServerPort"),
+                properties.getProperty("inventoryServerIP"),
+                properties.getProperty("inventoryServerPort")
         );
         return instance;
     }
@@ -61,6 +80,14 @@ public class Config {
 
     public int getServerPort() {
         return serverPort;
+    }
+
+    public String getTargetURL(Service service){
+        String prefix = "http://";
+        return switch(service){
+            case ACCOUNTING -> prefix + accountingServerIP + ":" + accountingServerPort;
+            case INVENTORY -> prefix + inventoryServerIP + ":" + inventoryServerPort;
+        };
     }
 
 }
