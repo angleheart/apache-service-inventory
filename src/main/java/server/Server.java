@@ -15,7 +15,7 @@ public class Server {
         ));
 
         post("/parts/update", (req, res) -> tryPostIssue(
-                INVENTORY, "/parts/update", res.body()
+                INVENTORY, "/parts/update", req.body()
         ));
 
         post("/customers", (req, res) -> tryPostIssue(
