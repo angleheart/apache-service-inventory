@@ -3,7 +3,6 @@ package server;
 import database.Database;
 import database.SequenceDatabase;
 import objects.Sequence;
-import org.apache.http.client.methods.CloseableHttpResponse;
 
 import static server.Service.*;
 import static server.Transformer.fromJson;
@@ -54,7 +53,8 @@ public class Server {
                  var accountingClient = new SequenceClient(ACCOUNTING, "/invoice/create");
                  Database database = new Database()) {
 
-                inventoryClient.issuePost(req.body());
+                Sequence sequence = fromJson(Sequence.class, req.body());
+                inventoryClient.issuePost(toJson(sequence.getLines()));
 //                String response = accountingClient.issuePost(req.body());
 
                 SequenceDatabase sequenceDatabase = new SequenceDatabase(database.getConnection());
