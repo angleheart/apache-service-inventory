@@ -5,6 +5,7 @@ USE Sequences;
 CREATE TABLE Sequences
 (
     SaveName            varchar(50) PRIMARY KEY,
+    CreationTime        TIMESTAMP        NOT NULL,
     CustomerNumber      varchar(10)      NOT NULL,
     CounterPersonNumber tinyint UNSIGNED NOT NULL,
     PurchaseOrder       varchar(15),

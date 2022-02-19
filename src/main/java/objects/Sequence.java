@@ -4,24 +4,25 @@ import java.util.List;
 
 public class Sequence {
 
-    private final String sequenceName;
+    private String sequenceName;
+    private long creationTime;
+
     private final String customerNumber;
     private final String vehicleDescription;
     private final String shipTo;
     private final String po;
     private final int counterPersonNumber;
     private final double freightTotal;
-    private final List<SequenceLine> lines;
+    private final List<Line> lines;
+
     public Sequence(
-            String sequenceName,
             String customerNumber,
             String vehicleDescription,
             String shipTo,
             String po,
             int counterPersonNumber,
             double freightTotal,
-            List<SequenceLine> lines) {
-        this.sequenceName = sequenceName;
+            List<Line> lines) {
         this.customerNumber = customerNumber;
         this.vehicleDescription = vehicleDescription;
         this.shipTo = shipTo;
@@ -31,8 +32,20 @@ public class Sequence {
         this.lines = lines;
     }
 
+    public void setSequenceName(String sequenceName){
+        this.sequenceName = sequenceName;
+    }
+
+    public void setCreationTime(long creationTime){
+        this.creationTime = creationTime;
+    }
+
     public String getSequenceName() {
         return sequenceName;
+    }
+
+    public long getCreationTime(){
+        return creationTime;
     }
 
     public String getCustomerNumber() {
@@ -59,7 +72,7 @@ public class Sequence {
         return freightTotal;
     }
 
-    public List<SequenceLine> getLines() {
+    public List<Line> getLines() {
         return lines;
     }
 

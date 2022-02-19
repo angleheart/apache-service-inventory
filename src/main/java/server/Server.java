@@ -42,6 +42,8 @@ public class Server {
             try (Database database = new Database()) {
                 SequenceDatabase sequenceDatabase = new SequenceDatabase(database.getConnection());
                 sequenceDatabase.kill(fromJson(Sequence.class, req.body()).getSequenceName());
+            }catch(Exception e){
+                e.printStackTrace();
             }
             return null;
         });

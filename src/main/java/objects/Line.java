@@ -1,6 +1,6 @@
 package objects;
 
-public class SequenceLine {
+public class Line {
 
     private final int indexKey;
     private final int qty;
@@ -11,7 +11,7 @@ public class SequenceLine {
     private final double unitPrice;
     private final String tx;
 
-    public SequenceLine(
+    public Line(
             int indexKey,
             int qty,
             String mfg,

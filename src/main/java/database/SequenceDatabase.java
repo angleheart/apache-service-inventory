@@ -1,13 +1,13 @@
 package database;
 
 import objects.Sequence;
-import objects.SequenceLine;
+import objects.Line;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public record SequenceDatabase(Connection conn) {
@@ -25,7 +25,7 @@ public record SequenceDatabase(Connection conn) {
     public Sequence get(String sequenceName) throws SQLException {
 
         PreparedStatement prep = conn.prepareStatement(
-                "SELECT * FROM Sequences WHERE SaveName = ?;"
+                "SELECT * FROM Sequences WHERE SaveName = ? ORDER BY CreationTime DESC;"
         );
 
         PreparedStatement prepLines = conn.prepareStatement(
@@ -38,10 +38,10 @@ public record SequenceDatabase(Connection conn) {
         ResultSet resultSet = prep.executeQuery();
         ResultSet lineResultSet = prepLines.executeQuery();
 
-        List<SequenceLine> lines = new ArrayList<>();
+        List<Line> lines = new ArrayList<>();
 
         while(lineResultSet.next())
-            lines.add(new SequenceLine(
+            lines.add(new Line(
                     lineResultSet.getInt("IndexKey"),
                     lineResultSet.getInt("Quantity"),
                     lineResultSet.getString("LineCode"),
@@ -53,8 +53,7 @@ public record SequenceDatabase(Connection conn) {
             ));
 
         resultSet.next();
-        return new Sequence(
-                resultSet.getString("SaveName"),
+        Sequence sequence = new Sequence(
                 resultSet.getString("CustomerNumber"),
                 resultSet.getString("VehicleDescription"),
                 resultSet.getString("ShipTo"),
@@ -63,6 +62,9 @@ public record SequenceDatabase(Connection conn) {
                 resultSet.getDouble("FreightTotal"),
                 lines
         );
+        sequence.setCreationTime(resultSet.getTimestamp("CreationTime").getTime());
+        sequence.setSequenceName(resultSet.getString("SaveName"));
+        return sequence;
     }
 
     public void hold(Sequence sequence) throws SQLException {
@@ -72,19 +74,20 @@ public record SequenceDatabase(Connection conn) {
             List<PreparedStatement> prepStatements = new ArrayList<>();
 
             PreparedStatement prepMain = conn.prepareStatement(
-                    "INSERT INTO Sequences(SaveName, CustomerNumber, CounterPersonNumber, PurchaseOrder, " +
-                            "VehicleDescription, ShipTo, FreightTotal) VALUES (?, ?, ?, ?, ?, ?, ?);"
+                    "INSERT INTO Sequences(SaveName, CreationTime, CustomerNumber, CounterPersonNumber, PurchaseOrder, " +
+                            "VehicleDescription, ShipTo, FreightTotal) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
             );
             prepMain.setString(1, sequence.getSequenceName());
-            prepMain.setString(2, sequence.getCustomerNumber());
-            prepMain.setInt(3, sequence.getCounterPersonNumber());
-            prepMain.setString(4, sequence.getPo());
-            prepMain.setString(5, sequence.getVehicleDescription());
-            prepMain.setString(6, sequence.getShipTo());
-            prepMain.setDouble(7, sequence.getFreightTotal());
+            prepMain.setTimestamp(2, new Timestamp(Calendar.getInstance().getTime().getTime()));
+            prepMain.setString(3, sequence.getCustomerNumber());
+            prepMain.setInt(4, sequence.getCounterPersonNumber());
+            prepMain.setString(5, sequence.getPo());
+            prepMain.setString(6, sequence.getVehicleDescription());
+            prepMain.setString(7, sequence.getShipTo());
+            prepMain.setDouble(8, sequence.getFreightTotal());
             prepStatements.add(prepMain);
 
-            for(SequenceLine line : sequence.getLines()){
+            for(Line line : sequence.getLines()){
                 PreparedStatement prep = conn.prepareStatement(
                         "INSERT INTO SequenceLines(IndexKey, SaveName, Quantity, LineCode, PartNumber, " +
                                 "Description, ListPrice, UnitPrice, TaxCode) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);"
