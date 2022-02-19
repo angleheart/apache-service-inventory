@@ -47,8 +47,8 @@ public class Server {
             return null;
         });
 
-        post("/sequences/release", (req, res) -> {
-            System.out.println("[Sequence Server] POST /sequences/release/");
+        post("/sequences/release/:code", (req, res) -> {
+            System.out.println("[Sequence Server] POST /sequences/release/" + req.params(":code"));
 
             try (var inventoryClient = new SequenceClient(INVENTORY, "/parts/invoice/push");
                  var accountingClient = new SequenceClient(ACCOUNTING, "/invoice/create");
