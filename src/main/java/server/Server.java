@@ -52,12 +52,12 @@ public class Server {
             System.out.println("[Sequence Server] POST /sequences/release/" + req.params(":code"));
 
             try (var inventoryClient = new SequenceClient(INVENTORY, "/parts/invoice/push");
-                 var accountingClient = new SequenceClient(ACCOUNTING, "/invoice/create");
+                 var accountingClient = new SequenceClient(ACCOUNTING, "/invoice/create/" + req.params(":code"));
                  Database database = new Database()) {
 
                 Sequence sequence = fromJson(Sequence.class, req.body());
                 inventoryClient.issuePost(toJson(sequence.getLines()));
-//                String response = accountingClient.issuePost(req.body());
+                String response = accountingClient.issuePost(req.body());
 
                 SequenceDatabase sequenceDatabase = new SequenceDatabase(database.getConnection());
                 sequenceDatabase.kill(fromJson(Sequence.class, req.body()).getSequenceName());
