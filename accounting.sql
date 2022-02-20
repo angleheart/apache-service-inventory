@@ -12,13 +12,10 @@ CREATE TABLE Invoices
     VehicleDescription  varchar(50),
     ShipTo              varchar(50),
     ReleaseTime         TIMESTAMP         NOT NULL,
-    TransCode           varchar(3)        NOT NULL,
     ReleaseCode         tinyint           NOT NULL,
     Balance             decimal(10, 2)    NOT NULL,
-
     FreightTotal        decimal(10, 2)    NOT NULL,
     TaxRate             decimal(3, 3)     NOT NULL,
-
     AccountingPeriod    smallint UNSIGNED NOT NULL
 );
 

@@ -13,6 +13,7 @@ public class Sequence {
     private final int counterPersonNumber;
     private final double freightTotal;
     private final double taxRate;
+
     private final List<Line> lines;
 
     public Sequence(
@@ -61,6 +62,10 @@ public class Sequence {
 
     public List<Line> getLines() {
         return lines;
+    }
+
+    public double getTaxRate() {
+        return taxRate;
     }
 
     public double getTaxableNet() {

@@ -16,6 +16,7 @@ public class Database implements AutoCloseable {
 
     public Database() throws SQLException {
         this.conn = dataSource.getConnection();
+        this.conn.setAutoCommit(false);
     }
 
     public Connection getConnection(){
